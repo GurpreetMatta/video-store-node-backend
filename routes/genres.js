@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
-const { genreSchema, validateGenre } = require('../models/Genre');
+const { genreSchema, validateGenre } = require('../models/genres');
 
 // model
 const Genre = mongoose.model('Genre', genreSchema);

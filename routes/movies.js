@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { movieSchema, validateMovies } = require('../models/Movies');
+const { movieSchema, validateMovies } = require('../models/movies');
 const mongoose = require('mongoose');
 const { Genre } = require('./genres')
 const Joi = require('joi');
