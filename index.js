@@ -14,25 +14,27 @@ const users = require('./routes/users');
 const auth = require('./routes/auth');
 const Joi = require('@hapi/joi');
 
+Joi.objectId = require('joi-objectid')(Joi);
+
+// handle unhandledRejection exception
+process.on('unhandledRejection', (ex) => {
+    throw ex;
+});
+
+// handle uncaught exception
+winston.exceptions.handle(new transports.File({ filename: 'exceptions.log' }));
 
 // handle logging 
 winston.add(new winston.transports.File({ filename: 'combined.log' }));
 
 // winston mongodb
-winston.add(new winston.transports.MongoDB({db:config.get('db')}));
+winston.add(new winston.transports.MongoDB({ db: config.get('db') }));
 
 if (!config.get('jwtSecret')) {
     console.error('FATAL ERROR: jwt key not found');
     process.exit(1);
 }
 
-// handle uncaught exception
-process.on('uncaughtException', (ex) => {
-    console.log('uncaughtException');
-})
-
-
-Joi.objectId = require('joi-objectid')(Joi);
 app.use(express.json());
 // create connection
 mongoose.connect(config.get('db'), {
