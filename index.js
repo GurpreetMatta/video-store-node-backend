@@ -1,3 +1,7 @@
+require('express-async-errors');
+const winston = require('winston');
+require('winston-mongodb');
+const error = require('./middleware/error');
 const genres = require('./routes/genres');
 const customers = require('./routes/customers');
 const express = require('express');
@@ -10,10 +14,23 @@ const users = require('./routes/users');
 const auth = require('./routes/auth');
 const Joi = require('@hapi/joi');
 
+
+// handle logging 
+winston.add(new winston.transports.File({ filename: 'combined.log' }));
+
+// winston mongodb
+winston.add(new winston.transports.MongoDB({db:config.get('db')}));
+
 if (!config.get('jwtSecret')) {
     console.error('FATAL ERROR: jwt key not found');
     process.exit(1);
 }
+
+// handle uncaught exception
+process.on('uncaughtException', (ex) => {
+    console.log('uncaughtException');
+})
+
 
 Joi.objectId = require('joi-objectid')(Joi);
 app.use(express.json());
@@ -31,6 +48,9 @@ app.use('/api/movies', movies);
 app.use('/api/rentals', rentals);
 app.use('/api/users', users);
 app.use('/api/auths', auth);
+
+// handle error using error middleware method
+app.use(error);
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Listening on port ${port}...`));

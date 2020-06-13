@@ -22,7 +22,7 @@ router.post('/', async (req, res) => {
     return res.send({
         accessToken: user.genrateToken(),
         tokenType: "Bearer",
-        email: user.email
+        email:user.email
     });
 });
 
