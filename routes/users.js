@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const { User, validateUser } = require('../models/users');
 const _ = require('lodash');
 const bcrypt = require('bcrypt');
-
+const auth = require('../middleware/auth');
 // register user 
 router.post('/', async (req, res) => {
     const { error } = validateUser(req.body);
@@ -22,4 +22,9 @@ router.post('/', async (req, res) => {
     res.send(_.pick(user, ['_id', 'name', 'email', 'role']))
 });
 
+// current login user
+router.get('/me', auth, async (req, res) => {
+    const user = await User.findById(req.user.id).select('-password');
+    res.send(user);
+})
 module.exports = router;

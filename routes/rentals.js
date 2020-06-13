@@ -6,15 +6,16 @@ const { Customer } = require('./customers');
 const { Movie } = require('./movies');
 // rentals model
 const Rental = mongoose.model('Rental', rentalsSchema);
+const auth = require('../middleware/auth');
 
 // api to get all rentals
-router.get('/', async (req, res) => {
+router.get('/', auth, async (req, res) => {
     const rentals = await Rental.find().sort('dateout');
     res.send(rentals);
 });
 
 // api to get rentals by id
-router.get('/:id', async (req, res) => {
+router.get('/:id', auth, async (req, res) => {
     const rental = await Rental.findById(req.params.id);;
     if (!rental)
         return res.status(404).send('rental with given id no;t found');
@@ -23,7 +24,7 @@ router.get('/:id', async (req, res) => {
 });
 
 // create rental
-router.post('/', async (req, res) => {
+router.post('/', auth, async (req, res) => {
     const { error } = validateSchema(req.body);
     if (error)
         return res.status(400).send(error.details[0].message);

@@ -4,6 +4,7 @@ const { movieSchema, validateMovies } = require('../models/movies');
 const mongoose = require('mongoose');
 const { Genre } = require('./genres')
 const Joi = require('@hapi/joi');
+const auth = require('../middleware/auth');
 
 // model
 const Movie = mongoose.model('Movie', movieSchema);
@@ -66,7 +67,7 @@ router.put('/:id', async (req, res) => {
 });
 
 // Delete movie
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', auth, async (req, res) => {
     const movie = await Movie.findByIdAndRemove(req.params.id);
     if (!movie) return res.status(404).send('The movie with the given ID was not found.');
     res.send(movie);
