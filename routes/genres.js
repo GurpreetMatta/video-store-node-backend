@@ -9,7 +9,6 @@ const Genre = mongoose.model('Genre', genreSchema);
 
 // get all genres api
 router.get('/', async (req, res) => {
-  throw new Error('dsfjks')
   const genres = await Genre.find().sort('name');
   res.send(genres);
 });
