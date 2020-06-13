@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const Joi = require('joi');
+const Joi = require('@hapi/joi');
 
 // create schema
 const customerSchema = new mongoose.Schema({
@@ -19,14 +19,14 @@ const customerSchema = new mongoose.Schema({
   }
 });
 
-function validateCustomer(genre) {
-  const schema = {
+function validateCustomer(customer) {
+  const schema = Joi.object({
     name: Joi.string().min(5).max(50).required(),
     phone: Joi.string().min(10).max(10).required(),
     isGold: Joi.boolean().required()
-  };
+  });
 
-  return Joi.validate(genre, schema);
+  return schema.validate(customer);
 }
 
 exports.customerSchema = customerSchema;

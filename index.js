@@ -7,7 +7,7 @@ const config = require('config');
 const movies = require('./routes/movies')
 const rentals = require('./routes/rentals');
 const users = require('./routes/users');
-const Joi = require('joi');
+const Joi = require('@hapi/joi');
 
 
 Joi.objectId = require('joi-objectid')(Joi);
