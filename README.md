@@ -4,5 +4,6 @@
 
 in linux 
  # export vidlyJwtTokenSecret="secret key"
+in windows
  # set vidlyJwtTokenSecret="secret key"
      
